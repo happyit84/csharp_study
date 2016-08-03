@@ -32,11 +32,21 @@ namespace Wpf_study1
 
         private void buttonCE_Click(object sender, RoutedEventArgs e)
         {
+            handleCE();
+        }
+
+        private void handleCE()
+        {
             calc.ClearEntry();
             UpdateDisplay();
         }
 
         private void buttonC_Click(object sender, RoutedEventArgs e)
+        {
+            handleC();            
+        }
+
+        private void handleC()
         {
             calc.Clear();
             UpdateDisplay();
@@ -44,11 +54,21 @@ namespace Wpf_study1
 
         private void buttonBack_Click(object sender, RoutedEventArgs e)
         {
+            handleBack();            
+        }
+
+        private void handleBack()
+        {
             calc.Back();
             UpdateDisplay();
         }
 
         private void buttonSum_Click(object sender, RoutedEventArgs e)
+        {
+            handleSum();
+        }
+
+        private void handleSum()
         {
             calc.SetOpcode(Opcode.Sum);
             UpdateDisplay();
@@ -56,11 +76,21 @@ namespace Wpf_study1
 
         private void buttonSubtract_Click(object sender, RoutedEventArgs e)
         {
+            handleSubtract();            
+        }
+
+        private void handleSubtract()
+        {
             calc.SetOpcode(Opcode.Subtract);
             UpdateDisplay();
         }
 
         private void buttonMultiply_Click(object sender, RoutedEventArgs e)
+        {
+            handleMultiply();            
+        }
+
+        private void handleMultiply()
         {
             calc.SetOpcode(Opcode.Multiply);
             UpdateDisplay();
@@ -68,11 +98,21 @@ namespace Wpf_study1
 
         private void buttonDivide_Click(object sender, RoutedEventArgs e)
         {
+            handleDivide();            
+        }
+
+        private void handleDivide()
+        {
             calc.SetOpcode(Opcode.Divide);
             UpdateDisplay();
         }
         
         private void buttonPlusMinus_Click(object sender, RoutedEventArgs e)
+        {
+            handlePlusMinus();            
+        }
+
+        private void handlePlusMinus()
         {
             calc.ChangeSign();
             UpdateDisplay();
@@ -143,14 +183,94 @@ namespace Wpf_study1
 
         private void buttonPoint_Click(object sender, RoutedEventArgs e)
         {
+            handlePoint();            
+        }
+
+        private void handlePoint()
+        {
             calc.StartFloatingPoint();
             UpdateDisplay();
         }
 
         private void buttonEqual_Click(object sender, RoutedEventArgs e)
         {
+            handleEqual();            
+        }
+
+        private void handleEqual()
+        {
             calc.CalcResult();
             UpdateDisplay();
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.Back:  handleBack(); break;        // backspace
+                case Key.Decimal:                           // '.' period on numpad
+                case Key.OemPeriod: handlePoint(); break;   // '.' period on alphabet pad
+                case Key.Enter: handleEqual(); break;       // Enter on alphabet pad and Enter on numpad both
+                case Key.Escape: handleC(); break;          // ESC
+                case Key.Delete: handleCE(); break;         // Delete and Del Both
+                case Key.OemQuestion:                       // '/' slash
+                    if (ModifierKeys.None == Keyboard.Modifiers)
+                    {
+                        handleDivide();
+                    }
+                    break;                
+                case Key.OemPlus:   // '+' plus with Shift, '=' equal sign without Shift on alphabet pad
+                    if (ModifierKeys.Shift == Keyboard.Modifiers)
+                    {                        
+                        handleSum();
+                    }
+                    else
+                    {
+                        handleEqual();
+                    }
+                    break;
+                case Key.Add:   handleSum(); break; // '+' on numpad
+                case Key.OemMinus:                  // '-' on alpahbet pad
+                    if (ModifierKeys.None == Keyboard.Modifiers)
+                    {
+                        handleSubtract();                        
+                    }
+                    break;
+                case Key.Subtract:  handleSubtract(); break;    // '-' on numpad
+                case Key.Divide:    handleDivide(); break;      // '/' on numpad
+                case Key.D0:                                    // '0' on alphabet pad
+                case Key.NumPad0:   InputDigit(0); break;       // '0' on numpad                    
+                case Key.D1:
+                case Key.NumPad1:   InputDigit(1); break;
+                case Key.D2:
+                case Key.NumPad2:   InputDigit(2); break;
+                case Key.D3:
+                case Key.NumPad3:   InputDigit(3); break;
+                case Key.D4:
+                case Key.NumPad4:   InputDigit(4); break;
+                case Key.D5:
+                case Key.NumPad5:   InputDigit(5); break;
+                case Key.D6:
+                case Key.NumPad6:   InputDigit(6); break;
+                case Key.D7:
+                case Key.NumPad7:   InputDigit(7); break;
+                case Key.D8:
+                case Key.NumPad8:
+                    if(ModifierKeys.Shift == Keyboard.Modifiers)    // '*' (8 + Shift) on alphabet pad
+                    {
+                        handleMultiply();
+                    }
+                    else
+                    {
+                        InputDigit(8);
+                    }                    
+                    break;
+                case Key.Multiply:  handleMultiply(); break;    // '*' on numpad
+                case Key.D9:
+                case Key.NumPad9:
+                    InputDigit(9);
+                    break;              
+            }
         }
     }
 
@@ -271,8 +391,7 @@ namespace Wpf_study1
         }
 
         public void ChangeSign()
-        {
-            
+        {            
             StringBuilder operand = GetEditingOperand();
             
             if(null != operand)

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Wpf_study1"
         xmlns:p = "clr-namespace:Wpf_study1.Properties"
         mc:Ignorable="d"
-        Title="{x:Static p:Resources.Title}" Height="600" Width="350">
+        Title="{x:Static p:Resources.Title}" Height="600" Width="350" KeyDown="Window_KeyDown">
     <Window.Resources>
         <SolidColorBrush x:Key="brushDisplayBackground" Color="WhiteSmoke"/>
         <Style x:Key="BaseButtonStyle" TargetType="Button">
